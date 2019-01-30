@@ -24,6 +24,7 @@ func main() {
 		panic(err)
 	}
 
+	defer fmt.Println("\n\nFinish")
 	fmt.Println("Start")
 
 	header := res.Header
@@ -75,18 +76,14 @@ func main() {
 
 	wg.Wait()
 	ioutil.WriteFile(path.Base(url), []byte(string(strings.Join(body, ""))), 0x777)
-
-	fmt.Println("\n\nFinish")
 }
 
 func getParseCount(length int) int {
-	var count int
 	if length > 104857600 {
-		count = 100
+		return 100
 	} else if length > 1048576 {
-		count = 10
+		return 50
 	} else {
-		count = 2
+		return 3
 	}
-	return count
 }
