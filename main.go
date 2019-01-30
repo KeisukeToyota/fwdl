@@ -26,23 +26,23 @@ func main() {
 
 	fmt.Println("Start")
 
-	maps := res.Header
-	length, err := strconv.Atoi(maps["Content-Length"][0])
-	limit := getParseCount(length)
-	bar := pb.StartNew(limit)
+	header := res.Header
+	length, err := strconv.Atoi(header["Content-Length"][0])
+	count := getParseCount(length)
+	bar := pb.StartNew(count)
 
-	fmt.Println("\nParse count : " + strconv.Itoa(limit) + "\n")
+	fmt.Println("\nParse count : " + strconv.Itoa(count) + "\n")
 
-	lenSub := length / limit
-	body := make([]string, limit+1)
-	for i := 0; i < limit; i++ {
+	lenSub := length / count
+	body := make([]string, count+1)
+	for i := 0; i < count; i++ {
 		wg.Add(1)
 
 		min := lenSub * i
 		max := lenSub * (i + 1)
 
-		if i == limit-1 {
-			max += length % limit
+		if i == count-1 {
+			max += length % count
 		}
 
 		go func(min int, max int, i int) {
