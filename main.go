@@ -29,6 +29,11 @@ func main() {
 
 	header := res.Header
 	length, err := strconv.Atoi(header["Content-Length"][0])
+
+	if err != nil {
+		panic(err)
+	}
+
 	count := getParseCount(length)
 	bar := pb.StartNew(count)
 

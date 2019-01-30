@@ -1,6 +1,7 @@
 # fwdl
 
-Fast Web contents Downloader
+Fast Web contents Downloader  
+fwdl will download a single file quickly!
 
 ## install
 
