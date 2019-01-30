@@ -24,8 +24,8 @@ func main() {
 		panic(err)
 	}
 
-	defer fmt.Println("\n\nFinish")
 	fmt.Println("Start")
+	defer fmt.Println("\n\nFinish")
 
 	header := res.Header
 	length, err := strconv.Atoi(header["Content-Length"][0])
@@ -39,14 +39,14 @@ func main() {
 	for i := 0; i < count; i++ {
 		wg.Add(1)
 
-		min := lenSub * i
-		max := lenSub * (i + 1)
+		start := lenSub * i
+		end := lenSub * (i + 1)
 
 		if i == count-1 {
-			max += length % count
+			end += length % count
 		}
 
-		go func(min int, max int, i int) {
+		go func(start int, end int, i int) {
 			client := &http.Client{}
 			req, err := http.NewRequest("GET", url, nil)
 
@@ -54,7 +54,7 @@ func main() {
 				panic(err)
 			}
 
-			req.Header.Add("Range", "bytes="+strconv.Itoa(min)+"-"+strconv.Itoa(max-1))
+			req.Header.Add("Range", "bytes="+strconv.Itoa(start)+"-"+strconv.Itoa(end-1))
 			res, err := client.Do(req)
 
 			if err != nil {
@@ -71,11 +71,11 @@ func main() {
 			body[i] = string(render)
 			bar.Increment()
 			wg.Done()
-		}(min, max, i)
+		}(start, end, i)
 	}
 
 	wg.Wait()
-	ioutil.WriteFile(path.Base(url), []byte(string(strings.Join(body, ""))), 0x777)
+	ioutil.WriteFile(path.Base(url), []byte(string(strings.Join(body, ""))), 0644)
 }
 
 func getParseCount(length int) int {
