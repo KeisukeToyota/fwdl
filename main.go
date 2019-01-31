@@ -9,8 +9,6 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-
-	"github.com/cheggaaa/pb"
 )
 
 func main() {
@@ -35,7 +33,6 @@ func main() {
 	}
 
 	count := getParseCount(length)
-	bar := pb.StartNew(count)
 
 	fmt.Println("\nParse count : " + strconv.Itoa(count) + "\n")
 
@@ -74,7 +71,6 @@ func main() {
 			}
 
 			body[i] = string(render)
-			bar.Increment()
 			wg.Done()
 		}(start, end, i)
 	}
