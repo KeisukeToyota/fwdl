@@ -23,7 +23,7 @@ func main() {
 	}
 
 	fmt.Println("Start")
-	defer fmt.Println("\n\nFinish")
+	defer fmt.Println("\nFinish")
 
 	header := res.Header
 	length, err := strconv.Atoi(header["Content-Length"][0])
